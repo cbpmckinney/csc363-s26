@@ -15,6 +15,7 @@ class CodeGenerator(AbstractASTVisitor):
     self.floatRegCount = 1 
     self.intTempPrefix = 't'
     self.floatTempPrefix = 'f'
+    self.numCtrlStructs = 0
 
     # Put code here for label counting
 
@@ -200,6 +201,8 @@ class CodeGenerator(AbstractASTVisitor):
     '''
     NEW:
     '''
+    node.setOp(node.getReversedOp(node.getOp())) # Reverse comparison type
+    
     co = CodeObject()
     return co
 
@@ -210,6 +213,8 @@ class CodeGenerator(AbstractASTVisitor):
     '''
     NEW
     '''
+    self._incrnumCtrlStruct()
+    labelnum = self._getnumCtrlStruct()
     
     co = CodeObject()
     
@@ -222,6 +227,8 @@ class CodeGenerator(AbstractASTVisitor):
     ''' 
     NEW
     '''
+    self._incrnumCtrlStruct()
+    labelnum = self._getnumCtrlStruct()
     co = CodeObject()
 
     return co
@@ -275,17 +282,21 @@ class CodeGenerator(AbstractASTVisitor):
 
 # Here we should define functions that generate labels for conditionals and loops
 
+  def _incrnumCtrlStruct(self):
+    self.numCtrlStructs += 1
 
+  def _getnumCtrlStruct(self) -> int:
+    return self.numCtrlStructs
   
-  def generateThenLabel(self) -> str:
-    return "asdf"
+  def _generateThenLabel(self, num: int) -> str:
+    return "then"+str(num)
 
-  def generateElseLabel(self) -> str:
-    return "asdf"
+  def _generateElseLabel(self, num: int) -> str:
+    return "else"+str(num)
 
-  def generateLoopLabel(self) -> str:
-    return "asdf"
+  def _generateLoopLabel(self, num: int) -> str:
+    return "loop"+str(num)
 
-
-  def generateOutLabel(self) -> str:
-    return "asdf"
+  def _generateDoneLabel(self, num: int) -> str:
+    return "done"+str(num)
+  
