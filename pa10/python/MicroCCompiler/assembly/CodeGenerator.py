@@ -85,8 +85,8 @@ class CodeGenerator(AbstractASTVisitor):
 
     self.currFunc = node.getFuncName()
 
-    self.intRegCount = 1
-    self.floatRegCount = 1
+    self.intRegCount = 0
+    self.floatRegCount = 0
 
 
   def postprocessFunctionNode(self, node: FunctionNode, body: CodeObject) -> CodeObject:
@@ -195,18 +195,18 @@ class CodeGenerator(AbstractASTVisitor):
 
 
   
-  def generateFunctionEntryLabel(self, func = None) -> str:
+  def _generateFunctionEntryLabel(self, func = None) -> str:
     if func is None:
       return "func_entry_" + self.currFunc
     else:
       return "func_entry_" + func
     
-  def generateFunctionCodeLabel(self, func = None) -> str:
+  def _generateFunctionCodeLabel(self, func = None) -> str:
     if func is None:
       return "func_code_" + self.currFunc
     else:
       return "func_code_" + func  
 
 
-  def generateFunctionRetLabel(self) -> str:
+  def _generateFunctionRetLabel(self) -> str:
     return "func_ret_" + self.currFunc
